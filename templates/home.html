@@ -1,0 +1,65 @@
+<html lang="en">
+  <head>
+    <title>RSS Reader</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="jumbotron">
+        <header>
+          <h1 align="center"><a href="/">RSS Reader</a></h1>
+          <p> <form method="post" align="center">
+                {% csrf_token %}
+                {{ form }}
+                <input type="button" onclick="test()" class="btn btn-success" value="Submit" />
+              </form>
+          </p>
+        </header>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="jumbotron">
+        <table id="table-id">
+
+
+        </table>
+      </div>
+    </div>
+  </body>
+
+      <script>
+      function test() {
+          var urlField = $('#id_urlField').val();
+          var xhttp = new XMLHttpRequest();
+
+    $.ajax({
+
+        url : "/",
+        type : "GET",
+        data : {urlField:urlField},
+        success : function(data){
+          var feeds = $.parseJSON(data)['feed']
+          $('#table-id').append('<tr><th class="text-center"> <h2>'+feeds[0]+ '</h2></th></tr>');
+
+          for(i=1;i<feeds.length;i++){
+            $('#table-id').append('<tr><td> <h4>'+feeds[i][0]+'</h4></td></tr>');
+            $('#table-id').append('<tr><td> <h5>'+feeds[i][1]+'</h5></td></tr>');
+            $('#table-id').append('<tr><td> <h5> <a href="'+feeds[i][2]+'">Reade More...</h5></td></tr>');
+            $('#table-id').append('<tr><td class="text-center">........................................</td></tr>')
+          }
+
+
+
+        }
+
+      });
+
+
+    }
+      </script>
+</html>
